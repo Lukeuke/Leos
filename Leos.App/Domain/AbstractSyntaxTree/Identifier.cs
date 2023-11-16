@@ -11,4 +11,9 @@ public class Identifier : IExpr
     
     public ENodeType Kind { get; } = ENodeType.Identifier;
     public string Symbol { get; }
+    
+    public override string ToString()
+    {
+        return '{' + $" Kind: {Kind}, Symbol: {Symbol} " + '}';
+    }
 }

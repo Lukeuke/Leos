@@ -1,10 +1,21 @@
 ﻿using Leos.App.Parsers;
+using static System.Console; 
 
-var t = new Lexer();
+var t = new TokenParser();
 
-var tokens = t.Tokenize("var madzia = 3");
+WriteLine("Leos command line v1.0");
 
-foreach (var token in tokens)
+while (true)
 {
-    Console.WriteLine(token);
+    Write(">");
+
+    var input = ReadLine();
+
+    if (input is null || input.Contains("exit"))
+    {
+        Environment.Exit(0);
+    }
+
+    var program = t.CreateAst(input);
+    WriteLine(program);
 }

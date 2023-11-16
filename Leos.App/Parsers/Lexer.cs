@@ -4,9 +4,9 @@ using Leos.App.Domain;
 
 namespace Leos.App.Parsers;
 
-public class Lexer
+public static class Lexer
 {
-    private Dictionary<string, ETokenType> _keywords = new()
+    private static readonly Dictionary<string, ETokenType> _keywords = new()
     {
         {
             "var",
@@ -14,7 +14,7 @@ public class Lexer
         }
     };
 
-    public IEnumerable<Token> Tokenize(string sourceCode)
+    public static IEnumerable<Token> Tokenize(string sourceCode)
     {
         var tokens = new List<Token>();
         var src = sourceCode.ToCharArray().ToList();
