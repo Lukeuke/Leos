@@ -10,13 +10,25 @@ if (args.Length > 0)
     if (args[0] is "-i" or "--input")
     {
         var path = args[1];
-        WriteLine(path);
+
+        if (!path.EndsWith(".leos"))
+        {
+            WriteLine("Wrong file extension"); 
+            Environment.Exit(1);
+        }
+
+        var sourceCode = File.ReadAllText(path);
+        
+        var program = t.CreateAst(sourceCode);
+        
+        var result = Interpreter.Evaluate(program);
+        WriteLine(result.RuntimeValueToString());
     }
     else
     {
         WriteLine("Invalid arguments.");
+        Environment.Exit(1);
     }
-    
 }
 else
 {
