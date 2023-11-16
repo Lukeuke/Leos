@@ -29,7 +29,7 @@ public static class Lexer
                 case ')':
                     tokens.Add(new Token(src.Shift().ToString(), ETokenType.CloseParen));
                     break;
-                case '+': case '-': case '*': case '/':
+                case '+': case '-': case '*': case '/': case '%':
                     tokens.Add(new Token(src.Shift().ToString(), ETokenType.BinaryOperator));
                     break;
                 case '=':

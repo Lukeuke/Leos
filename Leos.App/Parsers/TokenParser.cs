@@ -44,7 +44,35 @@ public class TokenParser
 
     private IStmt ParseExpr()
     {
-        return ParsePrimaryExpr();
+        return ParseAdditiveExpr();
+    }
+
+    private IStmt ParseAdditiveExpr()
+    {
+        var left = ParseMultiplExpr();
+
+        while (_tokens[0].Value is "+" or "-")
+        {
+            var @operator = Next().Value;
+            var right = ParseMultiplExpr();
+            left = new BinaryExpr((IExpr)left, (IExpr)right, @operator);
+        }
+
+        return left;
+    }
+
+    private IStmt ParseMultiplExpr()
+    {
+        var left = ParsePrimaryExpr();
+
+        while (_tokens[0].Value is "*" or "/" or "%")
+        {
+            var @operator = Next().Value;
+            var right = ParsePrimaryExpr();
+            left = new BinaryExpr((IExpr)left, (IExpr)right, @operator);
+        }
+
+        return left;
     }
     
     private IStmt ParsePrimaryExpr()
@@ -55,10 +83,27 @@ public class TokenParser
                 return new NumericLiteral(float.Parse(Next().Value));
             case ETokenType.Identifier:
                 return new Identifier(Next().Value);
+            case ETokenType.OpenParen:
+                Next();
+                var value = ParseExpr();
+                Expect(ETokenType.CloseParen, "Expected closing parentheses.");
+                return value;
             default:
                 throw new UnexpectedTokenException(_tokens[0]);
         }
 
         return null!;
+    }
+
+    private Token Expect(ETokenType type, string errorMsg)
+    {
+        var prev = _tokens.Shift();
+
+        if (prev is null || prev.TokenType != type)
+        {
+            throw new TokenExpectedException($"{errorMsg} \n {prev} \n Expected: {type}");
+        }
+
+        return prev;
     }
 }

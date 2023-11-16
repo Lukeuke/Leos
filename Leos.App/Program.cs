@@ -7,7 +7,7 @@ WriteLine("Leos command line v1.0");
 
 while (true)
 {
-    Write(">");
+    Write("> ");
 
     var input = ReadLine();
 

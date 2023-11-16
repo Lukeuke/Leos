@@ -30,6 +30,9 @@ public class Program : IStmt
                     sb.Append(',');
                     break;
                 case ENodeType.BinaryExpr:
+                    var expr = (BinaryExpr)stmt;
+                    sb.Append(expr);
+                    sb.Append(',');
                     break;
                 case ENodeType.CallExpr:
                     break;
