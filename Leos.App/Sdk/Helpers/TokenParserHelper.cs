@@ -1,4 +1,4 @@
-﻿namespace Leos.App.Helpers;
+﻿namespace Leos.App.Sdk.Helpers;
 
 public static class TokenParserHelper
 {

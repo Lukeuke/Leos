@@ -1,7 +1,8 @@
-﻿namespace Leos.App.Enums;
+﻿namespace Leos.App.Sdk.Enums;
 
 public enum ETokenType
 {
+    Null,
     Number,
     Identifier,
     Equals,

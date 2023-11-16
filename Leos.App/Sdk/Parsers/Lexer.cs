@@ -1,8 +1,8 @@
-﻿using Leos.App.Enums;
-using Leos.App.Helpers;
-using Leos.App.Domain;
+﻿using Leos.App.Sdk.Enums;
+using Leos.App.Sdk.Helpers;
+using Leos.App.Sdk.Domain;
 
-namespace Leos.App.Parsers;
+namespace Leos.App.Sdk.Parsers;
 
 public static class Lexer
 {
@@ -11,7 +11,11 @@ public static class Lexer
         {
             "var",
             ETokenType.Var
-        }
+        },
+        {
+            "null",
+            ETokenType.Null
+        },
     };
 
     public static IEnumerable<Token> Tokenize(string sourceCode)

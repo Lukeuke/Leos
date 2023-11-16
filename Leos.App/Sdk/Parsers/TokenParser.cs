@@ -1,18 +1,18 @@
-﻿using Leos.App.Domain;
-using Leos.App.Domain.AbstractSyntaxTree;
-using Leos.App.Enums;
-using Leos.App.Helpers;
+﻿using Leos.App.Sdk.Domain;
+using Leos.App.Sdk.Domain.AbstractSyntaxTree;
+using Leos.App.Sdk.Enums;
+using Leos.App.Sdk.Helpers;
 
-namespace Leos.App.Parsers;
+namespace Leos.App.Sdk.Parsers;
 
 public class TokenParser
 {
     private List<Token> _tokens = null!;
 
-    public Domain.AbstractSyntaxTree.Program CreateAst(string sourceCode)
+    public Sdk.Domain.AbstractSyntaxTree.Program CreateAst(string sourceCode)
     {
         _tokens = Lexer.Tokenize(sourceCode).ToList();
-        var program = new Domain.AbstractSyntaxTree.Program
+        var program = new Sdk.Domain.AbstractSyntaxTree.Program
         {
             Body = new List<IStmt>()
         };
@@ -83,6 +83,9 @@ public class TokenParser
                 return new NumericLiteral(float.Parse(Next().Value));
             case ETokenType.Identifier:
                 return new Identifier(Next().Value);
+            case ETokenType.Null:
+                Next();
+                return new NullLiteral();
             case ETokenType.OpenParen:
                 Next();
                 var value = ParseExpr();

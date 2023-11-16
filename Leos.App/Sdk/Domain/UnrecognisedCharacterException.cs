@@ -1,4 +1,4 @@
-﻿namespace Leos.App.Domain;
+﻿namespace Leos.App.Sdk.Domain;
 
 public class UnrecognisedCharacterException : Exception
 {

@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Leos.App.Enums;
+using Leos.App.Sdk.Enums;
 
-namespace Leos.App.Domain.AbstractSyntaxTree;
+namespace Leos.App.Sdk.Domain.AbstractSyntaxTree;
 
 public class Program : IStmt
 {
@@ -22,6 +22,11 @@ public class Program : IStmt
                 case ENodeType.NumericLiteral:
                     var numericLiteral = (NumericLiteral)stmt;
                     sb.Append(numericLiteral);
+                    sb.Append(',');
+                    break;
+                case ENodeType.NullLiteral:
+                    var nullLiteral = (NullLiteral)stmt;
+                    sb.Append(nullLiteral);
                     sb.Append(',');
                     break;
                 case ENodeType.Identifier:

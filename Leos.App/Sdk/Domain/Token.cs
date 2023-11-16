@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Leos.App.Enums;
+using Leos.App.Sdk.Enums;
 
-namespace Leos.App.Domain;
+namespace Leos.App.Sdk.Domain;
 
 public class Token
 {
