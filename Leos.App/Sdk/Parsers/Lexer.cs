@@ -17,6 +17,10 @@ public static class Lexer
             "null",
             ETokenType.Null
         },
+        {
+            "const",
+            ETokenType.Const
+        },
     };
 
     public static IEnumerable<Token> Tokenize(string sourceCode)
@@ -36,6 +40,9 @@ public static class Lexer
                     break;
                 case '+': case '-': case '*': case '/': case '%':
                     tokens.Add(new Token(src.Shift().ToString(), ETokenType.BinaryOperator));
+                    break;
+                case ';':
+                    tokens.Add(new Token(src.Shift().ToString(), ETokenType.SemiColon));
                     break;
                 case '=':
                     tokens.Add(new Token(src.Shift().ToString(), ETokenType.Equals));

@@ -40,15 +40,50 @@ public class TokenParser
 
     private IStmt ParseStmt()
     {
-        return ParseExpr();
+        switch (_tokens[0].TokenType)
+        {
+            case ETokenType.Var:
+            case ETokenType.Const:
+                return ParseDeclaration();
+            default:
+                return ParseExpr();
+        }
     }
 
-    private IStmt ParseExpr()
+    private IStmt ParseDeclaration()
+    {
+        var isConst = Next().TokenType == ETokenType.Const;
+        var identifier = Expect(ETokenType.Identifier, "Expected identifier 'var'.").Value;
+
+        if (_tokens[0].TokenType == ETokenType.SemiColon)
+        {
+            Next();
+            if (isConst)
+            {
+                throw new Exception("Constants must have a value.");
+            }
+
+            return new VariableDeclaration(isConst, identifier);
+        }
+
+        Expect(ETokenType.Equals, $"Expected '=' at '{_tokens[0].Value}'");
+        var declaration = new VariableDeclaration(isConst, identifier,ParseExpr());
+
+        //Expect(ETokenType.SemiColon, $"Expected ';' at '{_tokens[0].Value}'");
+        if (_tokens[0].TokenType == ETokenType.SemiColon)
+        {
+            Next();
+        }
+        
+        return declaration;
+    }
+
+    private IExpr ParseExpr()
     {
         return ParseAdditiveExpr();
     }
 
-    private IStmt ParseAdditiveExpr()
+    private IExpr ParseAdditiveExpr()
     {
         var left = ParseMultiplExpr();
 
@@ -59,7 +94,7 @@ public class TokenParser
             left = new BinaryExpr((IExpr)left, (IExpr)right, @operator);
         }
 
-        return left;
+        return (IExpr)left;
     }
 
     private IStmt ParseMultiplExpr()

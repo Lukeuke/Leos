@@ -8,7 +8,9 @@ public enum ETokenType
     Equals,
     OpenParen, 
     CloseParen,
+    SemiColon,
     BinaryOperator,
     Var,
-    EOF
+    Const,
+    EOF,
 }

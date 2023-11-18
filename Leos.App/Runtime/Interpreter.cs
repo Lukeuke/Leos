@@ -8,7 +8,7 @@ namespace Leos.App.Runtime;
 
 public static class Interpreter
 {
-    public static IRuntimeValue Evaluate(IStmt ast, Enviroment env)
+    public static IRuntimeValue Evaluate(IStmt ast, Environment env)
     {
         switch (ast.Kind)
         {
@@ -23,17 +23,31 @@ public static class Interpreter
                 return EvaluateBinaryExpression((BinaryExpr) ast, env);
             case ENodeType.Identifier:
                 return EvaluateIdentifier((Identifier) ast, env);
+            case ENodeType.VariableDeclaration:
+                return EvaluateVariableDeclaration((VariableDeclaration) ast, env);
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new Exception("Evaluation is not yet implemented.");
         }
     }
 
-    private static IRuntimeValue EvaluateIdentifier(Identifier identifier, Enviroment env)
+    private static IRuntimeValue EvaluateVariableDeclaration(VariableDeclaration delcaration, Environment env)
+    {
+        var value = delcaration.Value;
+
+        if (delcaration.Value is null)
+        {
+            value = (IExpr)new NullValue();
+        }
+        
+        return env.DeclareVariable(delcaration.Identifier, Evaluate(value!, env), delcaration.Constant);
+    }
+
+    private static IRuntimeValue EvaluateIdentifier(Identifier identifier, Environment env)
     {
         return env.LookupVariable(identifier.Symbol);
     }
 
-    private static IRuntimeValue EvaluateBinaryExpression(BinaryExpr binOp, Enviroment env)
+    private static IRuntimeValue EvaluateBinaryExpression(BinaryExpr binOp, Environment env)
     {
         var left = Evaluate(binOp.Left, env);
         var right = Evaluate(binOp.Right, env);
@@ -63,7 +77,7 @@ public static class Interpreter
         return new NumberValue(result);
     }
 
-    private static IRuntimeValue EvaluateProgram(Program2 program, Enviroment env)
+    private static IRuntimeValue EvaluateProgram(Program2 program, Environment env)
     {
         IRuntimeValue lastEvaluated = new NullValue();
 

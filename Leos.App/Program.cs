@@ -10,10 +10,7 @@ var time = new Stopwatch();
 time.Start();
 
 var t = new TokenParser();
-var env = new Enviroment();
-
-env.DeclareVariable("x", new NumberValue(3));
-env.DeclareVariable("isSmth", new BoolValue());
+var env = new Leos.App.Runtime.Environment();
 
 if (args.Length > 0)
 {

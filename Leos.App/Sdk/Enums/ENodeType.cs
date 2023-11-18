@@ -3,6 +3,7 @@
 public enum ENodeType
 {
     Program,
+    VariableDeclaration,
     NumericLiteral,
     NullLiteral,
     Identifier,
