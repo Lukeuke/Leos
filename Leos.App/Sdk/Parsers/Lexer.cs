@@ -1,6 +1,7 @@
-﻿using Leos.App.Sdk.Enums;
+﻿using Leos.App.Sdk.Domain;
+using Leos.App.Sdk.Enums;
 using Leos.App.Sdk.Helpers;
-using Leos.App.Sdk.Domain;
+using Leos.App.Sdk.Domain.Exceptions;
 
 namespace Leos.App.Sdk.Parsers;
 

@@ -1,4 +1,5 @@
 ﻿using Leos.App.Sdk.Domain;
+using Leos.App.Sdk.Domain.Exceptions;
 using Leos.App.Sdk.Domain.AbstractSyntaxTree;
 using Leos.App.Sdk.Enums;
 using Leos.App.Sdk.Helpers;
@@ -9,10 +10,10 @@ public class TokenParser
 {
     private List<Token> _tokens = null!;
 
-    public Sdk.Domain.AbstractSyntaxTree.Program CreateAst(string sourceCode)
+    public Domain.AbstractSyntaxTree.Program CreateAst(string sourceCode)
     {
         _tokens = Lexer.Tokenize(sourceCode).ToList();
-        var program = new Sdk.Domain.AbstractSyntaxTree.Program
+        var program = new Domain.AbstractSyntaxTree.Program
         {
             Body = new List<IStmt>()
         };

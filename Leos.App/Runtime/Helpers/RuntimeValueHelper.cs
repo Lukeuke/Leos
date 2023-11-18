@@ -34,6 +34,10 @@ public static class RuntimeValueHelper
                 result = (NumberValue)value;
                 result = result as NumberValue;
                 break;
+            case EValueType.Bool:
+                result = (BoolValue)value;
+                result = result as BoolValue;
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }

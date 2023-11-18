@@ -8,28 +8,35 @@ namespace Leos.App.Runtime;
 
 public static class Interpreter
 {
-    public static IRuntimeValue Evaluate(IStmt ast)
+    public static IRuntimeValue Evaluate(IStmt ast, Enviroment env)
     {
         switch (ast.Kind)
         {
             case ENodeType.Program:
-                return EvaluateProgram((Program2) ast);
+                return EvaluateProgram((Program2) ast, env);
             case ENodeType.NumericLiteral:
                 var numLit = (NumericLiteral)ast;
                 return new NumberValue(numLit.Value);
             case ENodeType.NullLiteral:
                 return new NullValue();
             case ENodeType.BinaryExpr:
-                return EvaluateBinaryExpression((BinaryExpr) ast);
+                return EvaluateBinaryExpression((BinaryExpr) ast, env);
+            case ENodeType.Identifier:
+                return EvaluateIdentifier((Identifier) ast, env);
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
 
-    private static IRuntimeValue EvaluateBinaryExpression(BinaryExpr binOp)
+    private static IRuntimeValue EvaluateIdentifier(Identifier identifier, Enviroment env)
     {
-        var left = Evaluate(binOp.Left);
-        var right = Evaluate(binOp.Right);
+        return env.LookupVariable(identifier.Symbol);
+    }
+
+    private static IRuntimeValue EvaluateBinaryExpression(BinaryExpr binOp, Enviroment env)
+    {
+        var left = Evaluate(binOp.Left, env);
+        var right = Evaluate(binOp.Right, env);
 
         if (left.Type == EValueType.Number && right.Type == EValueType.Number)
         {
@@ -56,13 +63,13 @@ public static class Interpreter
         return new NumberValue(result);
     }
 
-    private static IRuntimeValue EvaluateProgram(Program2 program)
+    private static IRuntimeValue EvaluateProgram(Program2 program, Enviroment env)
     {
         IRuntimeValue lastEvaluated = new NullValue();
 
         foreach (var stmt in program.Body)
         {
-            lastEvaluated = Evaluate(stmt);
+            lastEvaluated = Evaluate(stmt, env);
         }
         
         return lastEvaluated;

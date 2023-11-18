@@ -1,9 +1,19 @@
-﻿using Leos.App.Runtime;
+﻿using System.Diagnostics;
+using Leos.App.Runtime;
+using Leos.App.Runtime.Domain;
 using Leos.App.Runtime.Helpers;
 using Leos.App.Sdk.Parsers;
-using static System.Console; 
+using static System.Console;
+using Environment = System.Environment;
+
+var time = new Stopwatch();
+time.Start();
 
 var t = new TokenParser();
+var env = new Enviroment();
+
+env.DeclareVariable("x", new NumberValue(3));
+env.DeclareVariable("isSmth", new BoolValue());
 
 if (args.Length > 0)
 {
@@ -21,7 +31,7 @@ if (args.Length > 0)
         
         var program = t.CreateAst(sourceCode);
         
-        var result = Interpreter.Evaluate(program);
+        var result = Interpreter.Evaluate(program, env);
         WriteLine(result.RuntimeValueToString());
     }
     else
@@ -48,7 +58,12 @@ else
         var program = t.CreateAst(input);
         WriteLine(program);
         
-        var result = Interpreter.Evaluate(program);
+        var result = Interpreter.Evaluate(program, env);
         WriteLine(result.RuntimeValueToString());
     }
 }
+time.Stop();
+WriteLine("Execution time:");
+ForegroundColor = ConsoleColor.Magenta;
+WriteLine(time.Elapsed.ToString(@"m\:ss\.fff"));
+ResetColor();

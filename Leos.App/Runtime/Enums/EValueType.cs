@@ -3,5 +3,6 @@
 public enum EValueType
 {
     Null,
-    Number
+    Number,
+    Bool
 }
